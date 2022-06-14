@@ -7,6 +7,8 @@ const Person = require('./models/person')
 const unknownEndpoint = require('./middleware/unknownEndpoint')
 const errorHandler = require('./middleware/errorHandler')
 
+const baseUrl = 'https://cryptic-citadel-09520.herokuapp.com'
+
 app.use(cors())
 app.use(express.static('build'))
 app.use(express.json())
@@ -20,7 +22,7 @@ app.use(
   morgan(":method :url :status :res[content-length] - :response-time ms :body")
 );
 
-app.get('/api/persons', (request, response) => {
+app.get(baseUrl + '/api/persons', (request, response) => {
   Person.find({}).then(persons => {
     response.json(persons)
   })
