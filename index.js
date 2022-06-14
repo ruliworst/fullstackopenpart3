@@ -7,8 +7,6 @@ const Person = require('./models/person')
 const unknownEndpoint = require('./middleware/unknownEndpoint')
 const errorHandler = require('./middleware/errorHandler')
 
-const baseUrl = 'https://cryptic-citadel-09520.herokuapp.com'
-
 app.use(cors())
 app.use(express.static('build'))
 app.use(express.json())
