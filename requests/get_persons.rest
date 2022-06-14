@@ -1,1 +1,1 @@
-GET http://localhost:3001/api/persons
+GET https://cryptic-citadel-09520.herokuapp.com/api/persons
