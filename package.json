@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/ruliworst/fullstackopenpart3#readme",
   "devDependencies": {
+    "eslint": "^8.17.0",
     "nodemon": "2.0.15"
   },
   "dependencies": {

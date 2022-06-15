@@ -11,14 +11,14 @@ app.use(cors())
 app.use(express.static('build'))
 app.use(express.json())
 
-morgan.token('body', (req, res) => {
+morgan.token('body', (req) => {
   const body = req.body
   return JSON.stringify(body)
 })
 
 app.use(
-  morgan(":method :url :status :res[content-length] - :response-time ms :body")
-);
+  morgan(':method :url :status :res[content-length] - :response-time ms :body')
+)
 
 app.get('/api/persons', (request, response) => {
   Person.find({}).then(persons => {
@@ -38,23 +38,21 @@ app.get('/api/persons/:id', (request, response, next) => {
     } else {
       response.status(404).end() 
     }
-  })
-  .catch(error => {
+  }).catch(error => {
     next(error)
   })
 })
 
-app.delete('/api/persons/:id', (request, response) => {
-  Person.findByIdAndRemove(request.params.id).then(result => {
+app.delete('/api/persons/:id', (request, response, next) => {
+  Person.findByIdAndRemove(request.params.id).then(() => {
     response.status(204).end()
-  })
-  .catch(error => { next(error) })
+  }).catch(error => { next(error) })
 })
 
 app.put('/api/persons/:id', (request, response, next) => {
   Person.findByIdAndUpdate(
     request.params.id,
-     request.body,
+    request.body,
     { new: true, runValidators: true, context: 'query' })
     .then(result => { response.send(result)})
     .catch(error => { next(error)})
@@ -69,8 +67,7 @@ app.post('/api/persons', (request, response, next) => {
     })
   }
 
-  Person.find({name: body.name})
-  .then(result => {
+  Person.find({name: body.name}).then(result => {
     if (result.length > 0) {
       return response.status(400).json({
         error: 'name must be unique'
@@ -84,18 +81,17 @@ app.post('/api/persons', (request, response, next) => {
 
     person.save().then(result => {
       response.send(result)
-    })
-    .catch(error => {
+    }).catch(error => {
       return next(error)
     })
-  })
-  .catch(error => next(error)) 
+  }).catch(error => next(error)) 
 })
 
 app.use(unknownEndpoint)
 
 app.use(errorHandler)
 
+// eslint-disable-next-line no-undef
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
   console.log('Server running on PORT', PORT)
